@@ -1,0 +1,166 @@
+- aid in android app for selling goods to customers (fleetbase)
+	- think of the business process on how to help HR deploy M-kitchen app to employers.
+		- look at M kitchen app
+
+
+Figma app
+Fleet base
+
+Problem: 
+what will the sales process look like.
+what will the promotion look like.
+
+
+what is the job of the HR:
+create/alter user accounts
+deduct M-Kitchen order from salary
+
+
+
+Forgot password?
+- send to email (if given)
+- provide phone number and send OTP
+
+Business needs:
+
+
+Problem: we need a way to introduce M-kitchen to corporate
+Goal: sell more products to their employees.
+This provides an added benefit that the company can offer to its employees.
+problems: Have HR promote to employees.
+Requirements (create webapp, have proper IT support)
+Constraints: none
+
+-----------
+Suggestions:
+
+issues: 
+
+- How does HR know what the current employee list that have access to M-kitchen?
+
+- Why does HR need to approve the final order?
+
+- How does HR mention that employees are fired?
+
+- Can we remove Verify account through OTP process?
+
+- Can we link username to phone number for login purpose? 
+
+- Can we have address optional 
+
+- can we remove realtime stock counter (less crowded, reduce lagg)
+
+- Is a poster made for promotional purposes
+
+- can we have on-site assitance support
+
+- how easy/costly is it to have a device setup for SMS OTP (device/ sms subscription)
+
+- how do we send order confirmation? (email/sms(if email unavailable))
+
+- what about if the password is a 6 digit code for simplicity purpose? 
+
+- What is the process of a fired employee, as it revokes privileges.
+ (If HR forgets to remove them, then we can ask at the end of the year to confirm employee list) 
+
+- can we add as address option (send to the company)
+
+
+the best would be to have some interface that or interactive up to date list where they can alter the employee list.
+
+
+
+
+-------------------------------------------
+
+
+Tar Yar downloads stock and updates stock on app.
+
+Tar Yar updates order on app
+
+app updates stock and orders 
+
+user gets info 
+
+
+
+we have an ERP system (DAS) that is not automatically connected with the mobile phone app. 
+so when the user is making an order on the app, the order needs to be manually adjusted in the app, including stock. 
+I want to create a workflow on ordering an item. this includes Tar yar (the person who needs to adjust the stock and update the orders from the DAS to the app db).
+in the morning Tar Yar will download the stock and orders and update it in the DAS, which has its own Database. Also Taryar will export the updated stock with the app. 
+
+
+make 2 process (update stock and order/ user order process)
+
+user makes an order on the app
+
+app reduces stock on app db
+
+tar yar Downloads stock and order enters orders on DAS system
+
+tar yar downloads current stock and updates stock on app through entering excel. 
+
+
+
+
+tar yar exports sales orders from App to DAS
+tar yar exports and updates current stock level from DAS to app
+
+
+
+Write an email proposal where in we ask for $
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---[Support / Contact Page]---
+
+
+Got a question please contact us
+
+telephone number
+
+
+
+---[Admin Dashboard]---
+
+
+Company (dropdown list)
+
+
+Current delivery cycle (date)
+
+- Total Sales:
+
+- Total orders:
+
+
+Next delivery cycle (date)
+
+- Total Sales:
+
+- Total orders:
+
+
+---[Admin CRM]---
+
+Order ID, Customer, Delivery Address, Delivery Date, Amount, Status
+
+
+
+
+
+
+
+
+
+
+
