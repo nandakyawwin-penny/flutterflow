@@ -28,4 +28,7 @@ class CartItemsRow extends SupabaseDataRow {
 
   double get quantity => getField<double>('quantity')!;
   set quantity(double value) => setField<double>('quantity', value);
+
+  String? get name => getField<String>('name');
+  set name(String? value) => setField<String>('name', value);
 }

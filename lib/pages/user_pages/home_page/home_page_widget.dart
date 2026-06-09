@@ -1,5 +1,6 @@
 import '/backend/supabase/supabase.dart';
-import '/dropdown/dropdown_user/dropdown_user_widget.dart';
+import '/components/dropdown_user/dropdown_user_widget.dart';
+import '/components/product_item_row/product_item_row_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
+import '/index.dart';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,6 +38,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -136,8 +140,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       color: Color(0xFF15161E),
                       size: 26.0,
                     ),
-                    onPressed: () {
-                      print('IconButton pressed ...');
+                    onPressed: () async {
+                      context.pushNamed(
+                        CartWidget.routeName,
+                        extra: <String, dynamic>{
+                          '__transition_info__': TransitionInfo(
+                            hasTransition: true,
+                            transitionType: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 0),
+                          ),
+                        },
+                      );
                     },
                   ),
                 ),
@@ -367,314 +380,68 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               Expanded(
                 child: Container(
                   width: double.infinity,
+                  height: 800.0,
                   decoration: BoxDecoration(
                     color: Color(0xFFF1F4F8),
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FutureBuilder<List<ProductFilterViewRow>>(
-                          future: ProductFilterViewTable().queryRows(
-                            queryFn: (q) => q.eqOrNull(
-                              'category_name',
-                              _model.choiceChipsValue,
+                  child: FutureBuilder<List<ProductFilterViewRow>>(
+                    future: ProductFilterViewTable().queryRows(
+                      queryFn: (q) => q.eqOrNull(
+                        'category_name',
+                        _model.choiceChipsValue,
+                      ),
+                    ),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                FlutterFlowTheme.of(context).primary,
+                              ),
                             ),
                           ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 50.0,
-                                  height: 50.0,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      FlutterFlowTheme.of(context).primary,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                            List<ProductFilterViewRow>
-                                listViewProductFilterViewRowList =
-                                snapshot.data!;
+                        );
+                      }
+                      List<ProductFilterViewRow>
+                          listViewProductFilterViewRowList = snapshot.data!;
 
-                            return ListView.separated(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount:
-                                  listViewProductFilterViewRowList.length,
-                              separatorBuilder: (_, __) =>
-                                  SizedBox(height: 5.0),
-                              itemBuilder: (context, listViewIndex) {
-                                final listViewProductFilterViewRow =
-                                    listViewProductFilterViewRowList[
-                                        listViewIndex];
-                                return Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                      height: 130.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Container(
-                                              width: 100.0,
-                                              height: 300.0,
-                                              decoration: BoxDecoration(),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.network(
-                                                  listViewProductFilterViewRow
-                                                      .imageUrl!,
-                                                  width: 200.0,
-                                                  height: 300.0,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Align(
-                                                alignment: AlignmentDirectional(
-                                                    -1.0, 1.0),
-                                                child: Container(
-                                                  width: 140.0,
-                                                  height: 60.0,
-                                                  decoration: BoxDecoration(),
-                                                  child: Align(
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                            -1.0, 0.0),
-                                                    child: Text(
-                                                      listViewProductFilterViewRow
-                                                          .name!,
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .inter(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                            ),
-                                                            color: Colors.black,
-                                                            fontSize: 15.0,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 140.0,
-                                                height: 20.0,
-                                                decoration: BoxDecoration(),
-                                                child: Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          -1.0, 0.0),
-                                                  child: Text(
-                                                    valueOrDefault<String>(
-                                                      listViewProductFilterViewRow
-                                                          .stockLevel,
-                                                      'check availability',
-                                                    ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: () {
-                                                            if (listViewProductFilterViewRow
-                                                                    .stockLevel ==
-                                                                'in stock') {
-                                                              return Color(
-                                                                  0xFF59A635);
-                                                            } else if (listViewProductFilterViewRow
-                                                                    .stockLevel ==
-                                                                'limited stock') {
-                                                              return FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .tertiary;
-                                                            } else {
-                                                              return Color(
-                                                                  0xFF2B24EE);
-                                                            }
-                                                          }(),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                              if (listViewProductFilterViewRow
-                                                      .catPrice !=
-                                                  listViewProductFilterViewRow
-                                                      .corpPrice)
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 5.0, 0.0, 0.0),
-                                                  child: Container(
-                                                    width: 140.0,
-                                                    height: 20.0,
-                                                    decoration: BoxDecoration(),
-                                                    child: Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              -1.0, 0.0),
-                                                      child: Text(
-                                                        '${listViewProductFilterViewRow.catPrice?.toString()} KS',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  font:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .error,
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .lineThrough,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              Container(
-                                                width: 140.0,
-                                                height: 20.0,
-                                                decoration: BoxDecoration(),
-                                                child: Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          -1.0, 0.0),
-                                                  child: Text(
-                                                    '${listViewProductFilterViewRow.corpPrice?.toString()} Ks',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.black,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ]
-                                            .divide(SizedBox(width: 10.0))
-                                            .addToStart(SizedBox(width: 5.0))
-                                            .addToEnd(SizedBox(width: 10.0)),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ].divide(SizedBox(height: 10.0)),
-                    ),
+                      return ListView.separated(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: listViewProductFilterViewRowList.length,
+                        separatorBuilder: (_, __) => SizedBox(height: 5.0),
+                        itemBuilder: (context, listViewIndex) {
+                          final listViewProductFilterViewRow =
+                              listViewProductFilterViewRowList[listViewIndex];
+                          return wrapWithModel(
+                            model: _model.productItemRowModels.getModel(
+                              listViewProductFilterViewRow.id!,
+                              listViewIndex,
+                            ),
+                            updateCallback: () => safeSetState(() {}),
+                            child: ProductItemRowWidget(
+                              key: Key(
+                                'Keywll_${listViewProductFilterViewRow.id!}',
+                              ),
+                              parameter1: valueOrDefault<String>(
+                                listViewProductFilterViewRow.stockLevel,
+                                'check availability',
+                              ),
+                              productRecord: listViewProductFilterViewRow,
+                              parameter2:
+                                  listViewProductFilterViewRow.corpPrice!,
+                              parameter3:
+                                  listViewProductFilterViewRow.corpPrice!,
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ),
@@ -696,8 +463,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 5.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          context.pushNamed(
+                            CartWidget.routeName,
+                            extra: <String, dynamic>{
+                              '__transition_info__': TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 0),
+                              ),
+                            },
+                          );
                         },
                         text: 'Add to cart',
                         options: FFButtonOptions(

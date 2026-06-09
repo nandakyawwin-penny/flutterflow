@@ -28,6 +28,8 @@ class _PaymentConfirmedWidgetState extends State<PaymentConfirmedWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => PaymentConfirmedModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

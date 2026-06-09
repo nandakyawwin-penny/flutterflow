@@ -25,6 +25,10 @@ class AdminUserModel extends FlutterFlowModel<AdminUserWidget> {
   int get tabBarPreviousIndex =>
       tabBarController != null ? tabBarController!.previousIndex : 0;
 
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode;
+  TextEditingController? textController1;
+  String? Function(BuildContext, String?)? textController1Validator;
   // State field(s) for firstNameSignup widget.
   FocusNode? firstNameSignupFocusNode;
   TextEditingController? firstNameSignupTextController;
@@ -80,6 +84,9 @@ class AdminUserModel extends FlutterFlowModel<AdminUserWidget> {
   @override
   void dispose() {
     tabBarController?.dispose();
+    textFieldFocusNode?.dispose();
+    textController1?.dispose();
+
     firstNameSignupFocusNode?.dispose();
     firstNameSignupTextController?.dispose();
 

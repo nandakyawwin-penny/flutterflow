@@ -93,6 +93,8 @@ class _AdminCompanyWidgetState extends State<AdminCompanyWidget>
         ],
       ),
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

@@ -31,6 +31,8 @@ class _CartWidgetState extends State<CartWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => CartModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -85,7 +87,7 @@ class _CartWidgetState extends State<CartWidget> {
                         fontStyle:
                             FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                       ),
-                      color: FlutterFlowTheme.of(context).primaryText,
+                      color: Colors.black,
                       fontSize: 25.0,
                       letterSpacing: 0.0,
                       fontWeight:
@@ -107,267 +109,51 @@ class _CartWidgetState extends State<CartWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FutureBuilder<List<CartItemsRow>>(
-                future: CartItemsTable().queryRows(
-                  queryFn: (q) => q.eqOrNull(
-                    'user_id',
-                    currentUserUid,
-                  ),
+              Container(
+                height: 650.0,
+                decoration: BoxDecoration(
+                  color: Color(0xFFF1F4F8),
                 ),
-                builder: (context, snapshot) {
-                  // Customize what your widget looks like when it's loading.
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: SizedBox(
-                        width: 50.0,
-                        height: 50.0,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            FlutterFlowTheme.of(context).primary,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  List<CartItemsRow> listViewCartItemsRowList = snapshot.data!;
-
-                  return ListView.separated(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: listViewCartItemsRowList.length,
-                    separatorBuilder: (_, __) => SizedBox(height: 5.0),
-                    itemBuilder: (context, listViewIndex) {
-                      final listViewCartItemsRow =
-                          listViewCartItemsRowList[listViewIndex];
-                      return FutureBuilder<List<ProductsRow>>(
-                        future: ProductsTable().querySingleRow(
-                          queryFn: (q) => q.eqOrNull(
-                            'id',
-                            listViewCartItemsRow.productId,
-                          ),
-                        ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 50.0,
-                                height: 50.0,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    FlutterFlowTheme.of(context).primary,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          List<ProductsRow> columnProductsRowList =
-                              snapshot.data!;
-
-                          final columnProductsRow =
-                              columnProductsRowList.isNotEmpty
-                                  ? columnProductsRowList.first
-                                  : null;
-
-                          return SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 150.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(0.0, 0.0),
-                                        child: Container(
-                                          width: 100.0,
-                                          height: 300.0,
-                                          decoration: BoxDecoration(),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.network(
-                                              columnProductsRow!.imageUrl!,
-                                              width: 200.0,
-                                              height: 300.0,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: 150.0,
-                                            height: 60.0,
-                                            decoration: BoxDecoration(),
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  -1.0, 0.0),
-                                              child: Text(
-                                                valueOrDefault<String>(
-                                                  columnProductsRow?.name,
-                                                  'product name',
-                                                ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.black,
-                                                          fontSize: 15.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 150.0,
-                                            height: 20.0,
-                                            decoration: BoxDecoration(),
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  -1.0, 0.0),
-                                              child: Text(
-                                                valueOrDefault<String>(
-                                                  columnProductsRow?.stockLevel,
-                                                  'stock level',
-                                                ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: () {
-                                                            if (columnProductsRow
-                                                                    ?.stockLevel ==
-                                                                'in stock') {
-                                                              return Color(
-                                                                  0xFF59A635);
-                                                            } else if (columnProductsRow
-                                                                    ?.stockLevel ==
-                                                                'limited stock') {
-                                                              return FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .tertiary;
-                                                            } else {
-                                                              return Color(
-                                                                  0xFF2B24EE);
-                                                            }
-                                                          }(),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 150.0,
-                                            height: 20.0,
-                                            decoration: BoxDecoration(),
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  -1.0, 0.0),
-                                              child: Text(
-                                                '${columnProductsRow?.corpPrice?.toString()} Ks',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.black,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ]
-                                        .divide(SizedBox(width: 2.0))
-                                        .addToStart(SizedBox(width: 10.0))
-                                        .addToEnd(SizedBox(width: 10.0)),
-                                  ),
-                                ),
-                              ]
-                                  .divide(SizedBox(height: 5.0))
-                                  .addToStart(SizedBox(height: 5.0)),
+                child: FutureBuilder<List<CartItemsRow>>(
+                  future: CartItemsTable().queryRows(
+                    queryFn: (q) => q.eqOrNull(
+                      'user_id',
+                      currentUserUid,
+                    ),
+                  ),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
                             ),
-                          );
-                        },
+                          ),
+                        ),
                       );
-                    },
-                  );
-                },
+                    }
+                    List<CartItemsRow> listViewCartItemsRowList =
+                        snapshot.data!;
+
+                    return ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: listViewCartItemsRowList.length,
+                      separatorBuilder: (_, __) => SizedBox(height: 5.0),
+                      itemBuilder: (context, listViewIndex) {
+                        final listViewCartItemsRow =
+                            listViewCartItemsRowList[listViewIndex];
+                        return Container(
+                            width: 100, height: 100, color: Colors.green);
+                      },
+                    );
+                  },
+                ),
               ),
               Container(
                 height: 100.0,
@@ -399,6 +185,7 @@ class _CartWidgetState extends State<CartWidget> {
                                         .bodyMedium
                                         .fontStyle,
                                   ),
+                                  color: Colors.black,
                                   fontSize: 22.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,

@@ -124,6 +124,8 @@ class _AdminProductWidgetState extends State<AdminProductWidget>
         ],
       ),
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
