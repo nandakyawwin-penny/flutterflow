@@ -1,0 +1,45 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master # သင့်ရဲ့ main branch ထဲကို push လုပ်ရင် transition စမတ်မှာဖြစ်ပါတယ်
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. GitHub Repository ကို ဆွဲယူခြင်း
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Java Environment သတ်မှတ်ခြင်း (Flutter အတွက် လိုအပ်ချက်)
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. Flutter SDK ကို Install လုပ်ခြင်း
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # stable channel ကို သုံးပါမယ်
+
+      # 4. Dependency များ ဒေါင်းလုဒ်ဆွဲခြင်း
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. Flutter Web Build ဆောက်ခြင်း
+      - name: Build Web
+        run: flutter build web --base-href "/flutterflow/"
+        # ⚠️ သတိပြုရန်: <YOUR_REPOSITORY_NAME> နေရာမှာ သင့် GitHub Repo နာမည် အမှန်အတိုင်း ပြောင်းပေးပါ။
+        # ဥပမာ - repo နာမည်က "my-portfolio" ဆိုရင် "/my-portfolio/" လို့ ရေးရပါမယ်။ (အစ/အဆုံး စောင်းစလတ် ပါရပါမယ်)
+
+      # 6. ရလာတဲ့ Build ဖိုင်တွေကို gh-pages branch ပေါ်သို့ တင်ပေးခြင်း
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/web # Build ထွက်လာတဲ့ folder လမ်းကြောင်း
+          branch: gh-pages # တင်မယ့် branch နာမည် (အလိုအလျောက် ဆောက်ပေးသွားမှာပါ)
