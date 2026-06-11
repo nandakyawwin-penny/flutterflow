@@ -740,7 +740,7 @@
     },
     {
       "name": "meta",
-      "version": "1.18.0",
+      "version": "1.17.0",
       "dependencies": []
     },
     {
@@ -822,7 +822,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.11",
+      "version": "0.7.10",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -862,11 +862,6 @@
     {
       "name": "mime",
       "version": "2.0.0",
-      "dependencies": []
-    },
-    {
-      "name": "synchronized",
-      "version": "3.4.1",
       "dependencies": []
     },
     {
@@ -1069,6 +1064,11 @@
     {
       "name": "vm_service",
       "version": "15.2.0",
+      "dependencies": []
+    },
+    {
+      "name": "synchronized",
+      "version": "3.4.0+1",
       "dependencies": []
     }
   ],
